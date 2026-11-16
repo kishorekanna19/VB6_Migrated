@@ -1,0 +1,26 @@
+{
+  "name": "bookshop-server",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.0.0",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.4",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.1.0"
+  }
+}
