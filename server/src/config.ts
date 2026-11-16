@@ -2,10 +2,10 @@ import path from 'path';
 
 /**
  * Runtime configuration. The VB6 application used the ODBC DSN 'DSNBKShopKK'
- * (DB_BKShopKK.mdb); here the database location is configurable through the
- * DB_PATH environment variable.
+ * (DB_BKShopKK.mdb); here an embedded SQLite file is used and its location is
+ * configurable through the DB_PATH environment variable.
  */
-export const DEFAULT_DB_PATH = path.resolve(__dirname, '..', 'data', 'DB_BKShopKK.mdb');
+export const DEFAULT_DB_PATH = path.resolve(__dirname, '..', 'data', 'bookshop.sqlite');
 
 export function getDbPath(): string {
   const fromEnv = process.env.DB_PATH;

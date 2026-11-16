@@ -1,0 +1,26 @@
+{
+  "_note": "Rows exported from the original Access 97 database DB_BKShopKK.mdb. UserDetails passwords are the original plain-text values; they are hashed with scrypt (see hashPassword in src/db.ts) when loaded into SQLite and are never stored in clear text in the database.",
+  "NewBook": [
+    { "Name": "Database Managment System", "Author": "Leon & Leon", "Publication": "Oxford Pub.", "Edition": "7th", "Quantity": 5, "Purchase Price": 600, "Sale Price": 700 },
+    { "Name": "Data Structure Using Java", "Author": "Langsam Augenstein", "Publication": "LPE", "Edition": "5th", "Quantity": 10, "Purchase Price": 430, "Sale Price": 600 },
+    { "Name": "Programming with C", "Author": "Kamthane", "Publication": "Pearson Pub", "Edition": "2nd", "Quantity": 2, "Purchase Price": 280, "Sale Price": 330 },
+    { "Name": "Basics of Linux", "Author": "Sunil Kumar", "Publication": "Tata McGRAW Hill", "Edition": "2nd", "Quantity": 10, "Purchase Price": 210, "Sale Price": 340 }
+  ],
+  "CustomerDetails": [
+    { "Name": "Deepak Singh", "Moble": "2345678", "Email": "deepaksingh@gmail.com" },
+    { "Name": "Rohit Kumar", "Moble": "123456789", "Email": "rohit@email.com" },
+    { "Name": "Anand Kumar ", "Moble": "1234567", "Email": "anand@gmail.com" },
+    { "Name": "Aman Kumar", "Moble": "123456", "Email": "aman@gmail.com" }
+  ],
+  "NewOrder": [
+    { "Book": "Programming With C", "Author": "Reema Threja", "Publication": "Oxford Publication", "Quantity": 2, "Cus Name": "Deepak Singh", "Cus Mob": "9525357044", "Cus Email": "deepsinghkumar01@gmail.com" }
+  ],
+  "SalesDetails": [
+    { "Name": "dfhg", "Author": "23dffgf", "Quantity": 3, "Sale Price": 123, "Pay": 369 },
+    { "Name": "dfhg", "Author": "", "Quantity": null, "Sale Price": null, "Pay": null }
+  ],
+  "UserDetails": [
+    { "UserName": "Deepak", "Password": "Deepak" },
+    { "UserName": "Rohit", "Password": "Rohit" }
+  ]
+}
