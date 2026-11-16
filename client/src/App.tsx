@@ -1,71 +1,67 @@
-import { useEffect } from 'react';
-import { Link, Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
+import { lazy, type ComponentType } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './auth/ProtectedRoute';
+import MainLayout from './components/MainLayout';
+import AdminSettingsPage from './pages/AdminSettingsPage';
+import GoodbyePage from './pages/GoodbyePage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SplashPage from './pages/SplashPage';
 
-export const SPLASH_DELAY_MS = 2000;
+/**
+ * Feature pages (books, orders, sale, reports) live in ./pages and are resolved by
+ * file name so this shell does not depend on their exact export style.
+ */
+const pageModules = import.meta.glob<Record<string, unknown>>('./pages/*Page.tsx');
 
-function hideOnError(e: { currentTarget: HTMLImageElement }) {
-  e.currentTarget.style.display = 'none';
+function MissingPage() {
+  return <p>This screen is not available.</p>;
 }
 
-/** Equivalent of FrmSplash: shows the shop logo, then continues to the main form. */
-export function Splash() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const timer = setTimeout(() => navigate('/main', { replace: true }), SPLASH_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, [navigate]);
-
-  return (
-    <div className="splash">
-      <img src="/Logo.jpg" alt="Book Shop logo" onError={hideOnError} />
-      <h1>Book Shop Management System</h1>
-      <p>Loading...</p>
-    </div>
-  );
+function loadPage(candidates: string[]): ComponentType {
+  const key = candidates.map((n) => `./pages/${n}.tsx`).find((k) => k in pageModules);
+  if (!key) return MissingPage;
+  return lazy(async () => {
+    const mod = await pageModules[key]();
+    const component = (mod.default ?? Object.values(mod).find((v) => typeof v === 'function')) as
+      | ComponentType
+      | undefined;
+    return { default: component ?? MissingPage };
+  });
 }
 
-/** Equivalent of frmMain: application shell with branding. */
-export function MainLayout() {
-  return (
-    <div>
-      <header className="main-header">
-        <img src="/Logo.jpg" alt="Book Shop logo" onError={hideOnError} />
-        <h2>Book Shop Management System</h2>
-        <nav>
-          <Link to="/main" style={{ color: '#fff' }}>
-            Home
-          </Link>
-        </nav>
-      </header>
-      <main className="main-content">
-        <Outlet />
-      </main>
-    </div>
-  );
-}
-
-export function Home() {
-  return (
-    <div>
-      <h3>Welcome</h3>
-      <div className="branding">
-        <img src="/k1.Jpeg" alt="" onError={hideOnError} />
-        <img src="/k2.Jpeg" alt="" onError={hideOnError} />
-        <img src="/k3.Jpeg" alt="" onError={hideOnError} />
-      </div>
-    </div>
-  );
-}
+const NewBookPage = loadPage(['AddNewBookPage', 'NewBookPage', 'AddBookPage', 'BookNewPage']);
+const EditBookPage = loadPage(['EditBookPage', 'EditBookDetailsPage', 'UpdateBookPage', 'BookEditPage']);
+const BookStockPage = loadPage(['BookStockPage', 'BooksInStockPage', 'StockPage', 'ViewBookDetailsPage']);
+const NewOrderPage = loadPage(['NewOrderPage', 'OrderNewPage']);
+const SalePage = loadPage(['SalePage', 'SaleBookPage']);
+const CustomerDetailsPage = loadPage(['CustomerDetailsPage', 'CustomersPage', 'CustomerReportPage']);
+const OrderDetailsPage = loadPage(['OrderDetailsPage', 'OrdersPage', 'OrderReportPage']);
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Splash />} />
-      <Route path="/main" element={<MainLayout />}>
-        <Route index element={<Home />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/main" replace />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/splash" replace />} />
+        <Route path="/splash" element={<SplashPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/goodbye" element={<GoodbyePage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/books/new" element={<NewBookPage />} />
+            <Route path="/books/edit" element={<EditBookPage />} />
+            <Route path="/books/stock" element={<BookStockPage />} />
+            <Route path="/orders/new" element={<NewOrderPage />} />
+            <Route path="/sale" element={<SalePage />} />
+            <Route path="/reports/customers" element={<CustomerDetailsPage />} />
+            <Route path="/reports/orders" element={<OrderDetailsPage />} />
+            <Route path="/admin" element={<AdminSettingsPage />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Navigate to="/splash" replace />} />
+      </Routes>
+    </AuthProvider>
   );
 }
