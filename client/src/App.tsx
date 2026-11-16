@@ -34,6 +34,7 @@ function loadPage(candidates: string[]): ComponentType {
 const NewBookPage = loadPage(['AddNewBookPage', 'NewBookPage', 'AddBookPage', 'BookNewPage']);
 const EditBookPage = loadPage(['EditBookPage', 'EditBookDetailsPage', 'UpdateBookPage', 'BookEditPage']);
 const BookStockPage = loadPage(['BookStockPage', 'BooksInStockPage', 'StockPage', 'ViewBookDetailsPage']);
+const ViewBooksPage = loadPage(['ViewBooksPage', 'ViewBookDetailsPage']);
 const NewOrderPage = loadPage(['NewOrderPage', 'OrderNewPage']);
 const SalePage = loadPage(['SalePage', 'SaleBookPage']);
 const CustomerDetailsPage = loadPage(['CustomerDetailsPage', 'CustomersPage', 'CustomerReportPage']);
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/books/new" element={<NewBookPage />} />
             <Route path="/books/edit" element={<EditBookPage />} />
             <Route path="/books/stock" element={<BookStockPage />} />
+            <Route path="/books/view" element={<ViewBooksPage />} />
             <Route path="/orders/new" element={<NewOrderPage />} />
             <Route path="/sale" element={<SalePage />} />
             <Route path="/reports/customers" element={<CustomerDetailsPage />} />
