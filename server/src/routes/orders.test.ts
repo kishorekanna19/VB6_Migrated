@@ -1,4 +1,4 @@
-import request from 'supertest';
+import { request } from '../../test/authRequest';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from '../app';
 import { openDatabase, setDb } from '../db';

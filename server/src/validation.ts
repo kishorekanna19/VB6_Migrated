@@ -72,6 +72,11 @@ export const userSchema = z.object({
   password: text(LIMITS.user.password).min(1, 'Required'),
 });
 
+export const userUpdateSchema = z.object({
+  userName: requiredText(LIMITS.user.userName),
+  password: text(LIMITS.user.password).optional(),
+});
+
 export const loginSchema = z.object({
   userName: text(LIMITS.user.userName),
   password: text(LIMITS.user.password),

@@ -2,12 +2,20 @@ import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import express from 'express';
 import { createApp, errorHandler } from './app';
+import { signToken } from './middleware/auth';
 
 describe('app', () => {
   const app = createApp('/nonexistent-client-dist');
 
-  it('returns a JSON 404 for unknown /api routes', async () => {
+  it('returns 401 for unknown /api routes without a token', async () => {
     const res = await request(app).get('/api/unknown');
+    expect(res.status).toBe(401);
+  });
+
+  it('returns a JSON 404 for unknown /api routes', async () => {
+    const res = await request(app)
+      .get('/api/unknown')
+      .set('Authorization', `Bearer ${signToken({ id: 1, userName: 'test' })}`);
     expect(res.status).toBe(404);
     expect(res.body).toEqual({ error: 'Not found' });
   });
