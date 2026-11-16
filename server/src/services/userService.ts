@@ -15,7 +15,7 @@ export class DuplicateUserError extends Error {
 export function listUsers(): User[] {
   const rows = getDb()
     .prepare('SELECT id, "UserName", "Password" FROM UserDetails ORDER BY id')
-    .all() as UserRow[];
+    .all() as unknown as UserRow[];
   return rows.map((r) => toUser(toUserRecord(r)));
 }
 

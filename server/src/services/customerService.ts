@@ -4,7 +4,7 @@ import type { Customer, CustomerInput, CustomerRow } from '../types';
 export function listCustomers(): Customer[] {
   const rows = getDb()
     .prepare('SELECT id, "Name", "Moble", "Email" FROM CustomerDetails ORDER BY id')
-    .all() as CustomerRow[];
+    .all() as unknown as CustomerRow[];
   return rows.map(toCustomer);
 }
 

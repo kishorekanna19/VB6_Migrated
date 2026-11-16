@@ -13,10 +13,10 @@ export function listBooks(name?: string): Book[] {
   const db = getDb();
   const rows =
     name === undefined || name === ''
-      ? (db.prepare(`SELECT ${SELECT_COLUMNS} FROM NewBook ORDER BY id`).all() as BookRow[])
+      ? (db.prepare(`SELECT ${SELECT_COLUMNS} FROM NewBook ORDER BY id`).all() as unknown as BookRow[])
       : (db
           .prepare(`SELECT ${SELECT_COLUMNS} FROM NewBook WHERE "Name" = ? ORDER BY id`)
-          .all(name) as BookRow[]);
+          .all(name) as unknown as BookRow[]);
   return rows.map(toBook);
 }
 

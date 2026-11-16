@@ -36,7 +36,7 @@ export interface SaleLineInput {
 export class SaleValidationError extends Error {}
 
 export function listSales(): Sale[] {
-  const rows = getDb().prepare(`SELECT ${SELECT_COLUMNS} FROM SalesDetails ORDER BY id`).all() as SaleRow[];
+  const rows = getDb().prepare(`SELECT ${SELECT_COLUMNS} FROM SalesDetails ORDER BY id`).all() as unknown as SaleRow[];
   return rows.map(toSale);
 }
 

@@ -5,7 +5,7 @@ const SELECT_COLUMNS =
   'id, "Book", "Author", "Publication", "Quantity", "Cus Name", "Cus Mob", "Cus Email"';
 
 export function listOrders(): Order[] {
-  const rows = getDb().prepare(`SELECT ${SELECT_COLUMNS} FROM NewOrder ORDER BY id`).all() as OrderRow[];
+  const rows = getDb().prepare(`SELECT ${SELECT_COLUMNS} FROM NewOrder ORDER BY id`).all() as unknown as OrderRow[];
   return rows.map(toOrder);
 }
 

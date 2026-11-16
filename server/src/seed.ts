@@ -43,7 +43,7 @@ export function seedDatabase(db: Db, options: SeedOptions = {}): Record<string, 
   const data = options.data ?? loadSeedData();
   const inserted: Record<string, number> = {};
 
-  const run = db.transaction(() => {
+  const run = (): void => {
     for (const table of Object.keys(TABLES) as (keyof SeedData)[]) {
       const columns = TABLES[table];
       if (options.reset) {
@@ -73,8 +73,15 @@ export function seedDatabase(db: Db, options: SeedOptions = {}): Record<string, 
       }
       inserted[table] = rows.length;
     }
-  });
-  run();
+  };
+  db.exec('BEGIN');
+  try {
+    run();
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
   return inserted;
 }
 

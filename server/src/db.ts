@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { randomBytes, scryptSync, timingSafeEqual } from 'crypto';
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { getDbPath } from './config';
 import type {
   Book,
@@ -16,7 +16,7 @@ import type {
   UserRow,
 } from './types';
 
-export type Db = Database.Database;
+export type Db = DatabaseSync;
 
 /**
  * Schema of the 5 tables of DB_BKShopKK.mdb. Column names, types and text sizes
@@ -80,9 +80,9 @@ export function openDatabase(file: string): Db {
   if (file !== ':memory:') {
     fs.mkdirSync(path.dirname(file), { recursive: true });
   }
-  const db = new Database(file);
+  const db = new DatabaseSync(file);
   if (file !== ':memory:') {
-    db.pragma('journal_mode = WAL');
+    db.exec('PRAGMA journal_mode = WAL');
   }
   initSchema(db);
   return db;
