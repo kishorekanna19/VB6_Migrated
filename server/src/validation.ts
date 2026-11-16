@@ -55,6 +55,18 @@ export const saleSchema = z.object({
   pay: money.nullable(),
 });
 
+/**
+ * Body of POST /api/sales (one line of frmSale). Quantity and sale price are the raw
+ * text box contents (string or number); they are converted with vbVal in the service
+ * and Pay is always computed by the server.
+ */
+export const saleLineSchema = z.object({
+  name: requiredText(LIMITS.sale.name),
+  author: text(LIMITS.sale.author).optional(),
+  quantity: z.union([z.number(), z.string()]).nullish(),
+  salePrice: z.union([z.number(), z.string()]).nullish(),
+});
+
 export const userSchema = z.object({
   userName: requiredText(LIMITS.user.userName),
   password: text(LIMITS.user.password).min(1, 'Required'),
